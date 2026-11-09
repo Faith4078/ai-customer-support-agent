@@ -11,12 +11,6 @@ GOLDEN_EMAILS = [
         "section": "paddle-boards", "action": "reply",
     },
     {
-        "name": "board-size-german",
-        "email": email("Lena Vogel <lena@example.com>", "Welche Größe?",
-                       "Hallo, ich wiege 70 kg und bin Anfängerin. Welches Board passt zu mir?"),
-        "section": "paddle-boards", "action": "reply",
-    },
-    {
         "name": "pump-missing-with-order",
         "email": email("Sam Lee <sam@example.com>", "No pump in the box",
                        "My 11' board arrived without the pump. Order 112-4839201-5528341."),

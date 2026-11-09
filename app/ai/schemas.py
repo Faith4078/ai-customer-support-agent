@@ -7,11 +7,10 @@ Section = Literal["paddle-boards", "shelving", "returns-and-warranty", "shipping
 
 class Classification(BaseModel):
     section: Section
-    language: str = Field(description="Language of the latest customer message, e.g. English")
     needs_human: bool = Field(description="True when an always-escalate rule applies")
     reason: str = Field(description="One sentence explaining the classification")
     acknowledgement: str = Field(
-        description="Short note to the customer, in their language, that a colleague replies"
+        description="Short note to the customer that a colleague replies"
     )
 
 

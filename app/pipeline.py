@@ -22,7 +22,7 @@ ACKNOWLEDGEMENT = """Hi,
 
 Thanks for your email. We received your message and will get back to you soon.
 
-Harbor & Pine support"""
+Timber & Tide support"""
 
 
 def handle_message(gmail: Gmail, message_id: str) -> None:
