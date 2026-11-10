@@ -12,4 +12,6 @@ def skip_reason(message: dict, headers: dict[str, str], own_address: str) -> str
         return f"auto-submitted: {auto_submitted}"
     if headers.get("precedence", "").strip().lower() in {"bulk", "list", "junk"}:
         return "bulk or list mail"
+    if "list-unsubscribe" in headers:
+        return "has a List-Unsubscribe header"
     return None

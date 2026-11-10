@@ -11,18 +11,17 @@ from app.gmail import (
     get_body,
     get_headers,
     has_attachments,
+    strip_quoted,
 )
-from app.gmail import PROCESSED_LABEL, Gmail, get_body, get_headers
 from app.guards import skip_reason
 
 logger = logging.getLogger(__name__)
 MAX_ATTEMPTS = 3
 
-ACKNOWLEDGEMENT = """Hi,
 
-Thanks for your email. We received your message and will get back to you soon.
-
-Timber & Tide support"""
+def clean_body(text: str) -> str:
+    """Normalize line endings and drop the quoted thread a reply carries along."""
+    return strip_quoted(text.replace("\r\n", "\n"))
 
 
 def handle_message(gmail: Gmail, message_id: str) -> None:
@@ -52,13 +51,8 @@ def process(gmail: Gmail, message_id: str) -> tuple[str, dict]:
 
     sender = parseaddr(headers.get("from", ""))[1]
     ticket_id = db.upsert_ticket(message["threadId"], sender, headers.get("subject", ""))
-    db.save_message(ticket_id, message_id, "in", sender, get_body(message))
+    db.save_message(ticket_id, message_id, "in", sender, clean_body(get_body(message)))
 
-    """sent = gmail.send_reply(message, ACKNOWLEDGEMENT)
-    db.save_message(ticket_id, sent["id"], "out", gmail.address, ACKNOWLEDGEMENT)
-    db.update_ticket(ticket_id, "answered")
-    return "processed", {"action": "acknowledged"}
-    """
     thread = gmail.get_thread(message["threadId"])
     if gmail.is_escalated(thread):
         # A colleague owns this thread until they remove the needs-human label.
